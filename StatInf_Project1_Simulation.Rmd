@@ -5,6 +5,7 @@ date: "21/05/2020"
 output:
   html_document: default
   pdf_document: default
+    keep_md: yes
 ---
 
 
@@ -14,7 +15,7 @@ output:
 
 Investigate the exponential distribution in R and compare it with the Central Limit Theorem. The exponential distribution can be simulated in R with rexp(n, lambda) where lambda is the rate parameter. The mean of exponential distribution is 1/lambda and the standard deviation is also 1/lambda. Set lambda = 0.2 for all of the simulations.  Investigate the distribution of averages of 40 exponentials and perform a thousand simulations.
 
-To illustrate via simulation and associated explanatory text the properties of the distribution of the mean of 40 exponentials by performing the following tasks.
+To illustrate via simulation and associated explanatory text the properties of the distribution of the mean of 40 exponentials using the following:
 - Show the sample mean and compare it to the theoretical mean of the distribution.
 - Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
 - Show that the distribution is approximately normal.
@@ -32,9 +33,43 @@ knitr::opts_chunk$set(echo = TRUE, results = "hold", tidy = TRUE)
 ```
 <br />
 
+
+```{r SimulationSetup}
+##Setup variables provided by the instructions.
+n <- 40 ##number of exponentials
+lambda <- 0.2 ##universal lambda for all simulations
+simNum <- 1000 ## number of simulations
+
+set.seed(1234) ## set the seed to create reproducibility
+
+##Simulation in matrix format
+sim <- matrix(rexp(simNum * n, rate=lambda), simNum, n)
+meanSim <- rowMeans(sim) ## Refer to Appendix
+```
+
+
 #### 1. Show the sample mean and compare it to the theoretical mean of the distribution.
 ***
+As stated in the instruction the expected mean, mu of a exponential distribution is 1/lambda.We are going to compare this with the distribution mean.
 
+```{r Theoretical mean}
+muTheory <- 1/lambda
+muTheory
+```
+
+
+```{r SampleMean}
+muSim <-mean(meanSim)
+muSim
+```
+
+```{r SampleMeanHistogram}
+hist(meanSim, xlab = "Mean", main = "Sample Mean Distribution Simulation")
+abline(v = muSim, col = "red")
+abline(v = muTheory, col = "green")
+```
+
+The sample mean is `r muSim` and the theoretical mean is `r muTheory` which show that they are very close. This can be further seen with the histogram above.
 
 #### 2. Show how variable the sample is (via variance) and compare it to the theoretical variance of the distribution.
 ***
@@ -46,6 +81,10 @@ knitr::opts_chunk$set(echo = TRUE, results = "hold", tidy = TRUE)
 
 #### 4. Appendix
 ***
+
+First 6 lines of the mean of simulation
+`r head(meanSim)`
+
 The platform specification used:
 
 Spec    | Description
