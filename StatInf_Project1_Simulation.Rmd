@@ -74,7 +74,7 @@ The sample mean is `r muSim` and the theoretical mean is `r muTheory` which show
 
 <br />
 
-```{r SampleMeanHistogram2}
+```{r SampleMeanHistogram}
 ggplot(data.frame(meanSim), aes(x = meanSim)) + 
   geom_histogram(position="identity", color = "black", fill="yellow", binwidth=0.4) + 
   labs(title = "Sample Mean Distribution Simulation", x = "Mean") +
@@ -108,6 +108,23 @@ From the calculation above, we know that the sample distribution variance is `r 
 #### 3. Show that the distribution is approximately normal.
 ***
 
+The central limit theorem states that if you have a population with mean and standard deviation and take sufficiently large random samples from the population with replacement, then the distribution of the sample means will be approximately normally distributed.This means that we can use the normal probability model to quantify uncertainty when making inferences about a population mean based on the sample mean.
+
+Below plot shows that the the sample mean distribution is approximately normal.
+
+
+
+```{r SampleMeanNormalComparable}
+ggplot(data.frame(meanSim), aes(x = meanSim,)) + 
+  geom_histogram(position="identity", color = "black", fill="yellow", binwidth=0.4) + 
+  geom_density(aes(y=0.4*..count..),colour="blue", size=1) +
+  ##stat_function(fun = dnorm, colour = "green", args = list(mean = muTheory, sd=sqrt(varTheory))) +
+  labs(title = "Sample Mean vs Normal Distribution", x = "Mean") + 
+  geom_vline(xintercept = muSim, size=1, colour="red") + 
+  geom_vline(xintercept = muTheory, size=1, colour="green")
+```
+
+<br />
 
 #### 4. Appendix
 ***
