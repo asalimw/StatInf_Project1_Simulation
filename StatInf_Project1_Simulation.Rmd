@@ -3,8 +3,8 @@ title: "StatInf_Project1_Simulation_Exercise"
 author: "Willianto Asalim"
 date: "21/05/2020"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 
@@ -41,9 +41,9 @@ simNum <- 1000 ## number of simulations
 
 set.seed(1234) ## set the seed to create reproducibility
 
-##Simulation in matrix format
+##Sample Mean Simulation in matrix format
 sim <- matrix(rexp(simNum * n, rate=lambda), simNum, n)
-meanSim <- rowMeans(sim) ## Refer to Appendix
+meanSim <- rowMeans(sim) ## Refer to Appendix for the sample mean
 ```
 
 <br />
@@ -51,10 +51,11 @@ meanSim <- rowMeans(sim) ## Refer to Appendix
 
 #### 1. Show the sample mean and compare it to the theoretical mean of the distribution.
 ***
-As stated in the instruction the expected mean, mu of a exponential distribution is 1/lambda.We are going to compare this with the distribution mean.
+As stated in the instruction the expected mean, mu of a exponential distribution is 1/lambda. We are going to compare this with the sample mean.
 
 <br />
 
+The theoretical mean is
 ```{r Theoretical mean}
 muTheory <- 1/lambda
 muTheory
@@ -62,6 +63,7 @@ muTheory
 
 <br />
 
+The sample mean is
 ```{r SampleMean}
 muSim <-mean(meanSim)
 muSim
@@ -69,7 +71,7 @@ muSim
 
 <br />
 
-##### Ans: The sample mean is `r muSim` and the theoretical mean is `r muTheory` which prove that these two means are very close. 
+##### Ans: The sample mean is `r muSim` and the theoretical mean is `r muTheory` which prove that these values are very close. 
 
 <br />
 
@@ -100,6 +102,8 @@ varSample <- var(meanSim)
 varSample
 ```
 
+<br />
+
 ##### Ans: From the calculation, we know that the sample distribution variance is `r varSample` and the theoretical variance is `r varTheory` which is pretty close. 
 
 <br />
@@ -111,17 +115,19 @@ The plot below shows that the the sample mean distribution is approximately norm
 
 ```{r SampleMeanNormalComparable}
 ggplot(data.frame(meanSim), aes(x = meanSim,)) + 
-  geom_histogram(position="identity", color = "black", fill="yellow", binwidth=0.4) + 
-  geom_density(aes(y=0.4*..count..),colour="blue", size=1) +
-  ##stat_function(fun = dnorm, colour = "green", args = list(mean = muTheory, sd=sqrt(varTheory))) +
-  labs(title = "Sample Mean Distribution with Normal Distribution Curve", x = "Mean") + 
-  geom_vline(xintercept = muSim, size=1, colour="red") + 
-  geom_vline(xintercept = muTheory, size=1, colour="green")
+  geom_histogram(position="identity", color = "black", fill="yellow", binwidth=0.5) + 
+  geom_density(aes(y=0.5*..count..),colour="blue", size=1) +
+  ##stat_function(fun = dnorm, colour = "green", geom = "point", args = list(mean = muTheory, sd=sqrt(varTheory))) +
+  ##scale_y_continuous(breaks=c()) +
+  ##scale_x_continuous(breaks=c(3, 4, 5, 6, 7, 8), limits=c(3, 8)) +
+  ##geom_vline(xintercept = muSim, size=1, colour="red") +
+  ##geom_vline(xintercept = muTheory, size=1, colour="green") +
+  labs(title = "Sample Mean Histogram with Approx. Normal Distribution Curve", x = "Mean")
 ```
 
 <br />
 
-##### Ans: The central limit theorem states that if you have a population with mean and standard deviation and take sufficiently large random samples from the population with replacement, then the distribution of the sample means will be approximately normally distributed.The plot above proved the Central Limit Theorem and we can use the normal probability model to quantify uncertainty when making inferences about a population mean based on the sample mean.
+##### Ans: The central limit theorem states that if you have a population with mean and standard deviation and take sufficiently large random samples from the population with replacement, then the distribution of the sample means will be approximately normally distributed. The plot above proved the Central Limit Theorem thus we can use the normal probability model with confidence to quantify uncertainty when making inferences about a population mean based on the sample mean.
 
 <br />
 
